@@ -1,0 +1,22 @@
+{
+  "name": "movie-finder",
+  "version": "1.0.0",
+  "description": "Just an OMDB Browser",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AceDZN/movie-finder.git"
+  },
+  "keywords": [
+    "omdb"
+  ],
+  "author": "Alex Sindalovsky [AceDZN]",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AceDZN/movie-finder/issues"
+  },
+  "homepage": "https://github.com/AceDZN/movie-finder#readme"
+}
