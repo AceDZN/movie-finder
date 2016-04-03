@@ -18,5 +18,17 @@
   "bugs": {
     "url": "https://github.com/AceDZN/movie-finder/issues"
   },
-  "homepage": "https://github.com/AceDZN/movie-finder#readme"
+  "homepage": "https://github.com/AceDZN/movie-finder#readme",
+  "devDependencies":{
+    "browserify": "*",
+    "flux": "*",
+    "gulp": "*",
+    "reactify": "*",
+    "vinyl-source-stream": "*",
+    "object-assign": "*"
+  },
+  "dependencies":{
+    "react": "^0.14.7",
+    "react-dom": "^0.14.7"
+  }
 }
