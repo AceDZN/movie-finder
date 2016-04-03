@@ -1,5 +1,5 @@
 # movie-finder
-just a test for OMDB ReactJS SPA Browser with FLUX;
+just a test for TMDB ReactJS SPA Browser with FLUX;
 
 ####Familiar with Git?#####
 Checkout this repo, install dependencies, then start the gulp process with the following:
