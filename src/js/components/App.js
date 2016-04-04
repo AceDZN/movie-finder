@@ -2,6 +2,7 @@ var React = require('React');
 var AppActions = require('../actions/AppActions');
 var AppStore = require('../stores/AppStore');
 var SearchForm = require('./SearchForm');
+var MovieList = require('./MovieList');
 
 function getAppState(){
   return {
@@ -9,7 +10,7 @@ function getAppState(){
   }
 }
 
-var App = React.createClass({
+module.exports = React.createClass({
   getInitialState: function(){
     return getAppState();
   },
@@ -20,14 +21,18 @@ var App = React.createClass({
     AppStore.removeChangeListener(this._onChange);
   },
   render: function(){
-    console.log(this.state.movies,"this.state.movies");
+
+    if(this.state.movies === ''){
+      var results = '';
+    } else {
+      var results = this.state.movies;
+    }
     return (<div>
       <SearchForm />
+      <MovieList movies={this.state.movies} />
     </div>)
   },
   _onChange: function(){
     this.setState(getAppState());
   }
 });
-
-module.exports = App;

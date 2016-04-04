@@ -19952,11 +19952,12 @@ var AppActions = {
 
 module.exports = AppActions;
 
-},{"../constants/AppConstants":296,"../dispatcher/AppDispatcher":297}],294:[function(require,module,exports){
+},{"../constants/AppConstants":298,"../dispatcher/AppDispatcher":299}],294:[function(require,module,exports){
 var React = require('React');
 var AppActions = require('../actions/AppActions');
 var AppStore = require('../stores/AppStore');
 var SearchForm = require('./SearchForm');
+var MovieList = require('./MovieList');
 
 function getAppState(){
   return {
@@ -19964,7 +19965,7 @@ function getAppState(){
   }
 }
 
-var App = React.createClass({displayName: "App",
+module.exports = React.createClass({displayName: "exports",
   getInitialState: function(){
     return getAppState();
   },
@@ -19975,9 +19976,15 @@ var App = React.createClass({displayName: "App",
     AppStore.removeChangeListener(this._onChange);
   },
   render: function(){
-    console.log(this.state.movies,"this.state.movies");
+
+    if(this.state.movies === ''){
+      var results = '';
+    } else {
+      var results = this.state.movies;
+    }
     return (React.createElement("div", null, 
-      React.createElement(SearchForm, null)
+      React.createElement(SearchForm, null), 
+      React.createElement(MovieList, {movies: this.state.movies})
     ))
   },
   _onChange: function(){
@@ -19985,14 +19992,72 @@ var App = React.createClass({displayName: "App",
   }
 });
 
-module.exports = App;
+},{"../actions/AppActions":293,"../stores/AppStore":301,"./MovieList":296,"./SearchForm":297,"React":129}],295:[function(require,module,exports){
+var React = require('React');
 
-},{"../actions/AppActions":293,"../stores/AppStore":299,"./SearchForm":295,"React":129}],295:[function(require,module,exports){
+module.exports = React.createClass({displayName: "exports",
+  renderImage: function(){
+    if(this.props.movie.poster_path && this.props.movie.poster_path != null){
+      return "https://image.tmdb.org/t/p/w300"+this.props.movie.poster_path
+    } else {
+      return "./img/no-poster.jpg"
+    }
+  },
+  inset: function(){
+    return React.createElement("div", {className: "inset"}, 
+      this.props.movie.vote_average
+    )
+  },
+  render: function(){
+    return (
+      React.createElement("div", {className: "col-xs-6 col-sm-4 col-md-3 image_preview"}, 
+          React.createElement("h5", null, this.props.movie.title), 
+          React.createElement("img", {src: this.renderImage()}), 
+          this.inset()
+      )
+    );
+  }
+});
+
+},{"React":129}],296:[function(require,module,exports){
+var React = require('React');
+var AppActions = require('../actions/AppActions');
+var AppStore = require('../stores/AppStore');
+var Movie = require('./Movie');
+
+module.exports = React.createClass({displayName: "exports",
+  renderResults: function(){
+    var children = [];
+    if(this.props.movies.length >=1){
+      this.props.movies.map(function(movie,i){
+        children.push(React.createElement(Movie, {movie: movie, key: "movie_"+i}));
+      })
+      return (React.createElement("div", null, 
+          React.createElement("div", {className: "row"}, 
+            React.createElement("div", {className: "col-md-12"}, 
+              React.createElement("h3", {className: "results"}, "Results")
+            )
+          ), 
+          React.createElement("div", {className: "row"}, 
+            children
+          )
+        )
+        )
+    }
+  },
+  render: function(){
+    return (React.createElement("div", null, 
+        this.renderResults()
+    ));
+  }
+});
+
+},{"../actions/AppActions":293,"../stores/AppStore":301,"./Movie":295,"React":129}],297:[function(require,module,exports){
 var React = require('react');
 var AppActions = require('../actions/AppActions');
 var AppStore = require('../stores/AppStore');
 
-var SearchForm = React.createClass({displayName: "SearchForm",
+module.exports =  React.createClass({displayName: "exports",
   getInitialState: function(){
     return {
       searchQuery:"",
@@ -20040,15 +20105,13 @@ var SearchForm = React.createClass({displayName: "SearchForm",
   }
 });
 
-module.exports = SearchForm;
-
-},{"../actions/AppActions":293,"../stores/AppStore":299,"react":292}],296:[function(require,module,exports){
+},{"../actions/AppActions":293,"../stores/AppStore":301,"react":292}],298:[function(require,module,exports){
 module.exports = {
   SEARCH_MOVIES: "SEARCH_MOVIES",
   RECIEVE_RESULTS: "RECIEVE_RESULTS"
 }
 
-},{}],297:[function(require,module,exports){
+},{}],299:[function(require,module,exports){
 var Dispatcher = require('flux').Dispatcher;
 var assign = require('object-assign');
 var AppDispatcher = assign(new Dispatcher(), {
@@ -20063,7 +20126,7 @@ var AppDispatcher = assign(new Dispatcher(), {
 
 module.exports = AppDispatcher;
 
-},{"flux":158,"object-assign":161}],298:[function(require,module,exports){
+},{"flux":158,"object-assign":161}],300:[function(require,module,exports){
 var React = require('react');
 var ReactDOM = require('react-dom');
 var AppAPI = require('./utils/AppApi.js');
@@ -20074,7 +20137,7 @@ ReactDOM.render(
   document.getElementById('app')
 );
 
-},{"./components/App":294,"./utils/AppApi.js":301,"react":292,"react-dom":163}],299:[function(require,module,exports){
+},{"./components/App":294,"./utils/AppApi.js":303,"react":292,"react-dom":163}],301:[function(require,module,exports){
 var EventEmitter = require('events').EventEmitter;
 var assign = require('object-assign');
 
@@ -20123,7 +20186,7 @@ AppDispatcher.register(function(payload){
 });
 module.exports = AppStore;
 
-},{"../constants/AppConstants":296,"../dispatcher/AppDispatcher":297,"../utils/AppAPI":300,"events":130,"object-assign":161}],300:[function(require,module,exports){
+},{"../constants/AppConstants":298,"../dispatcher/AppDispatcher":299,"../utils/AppAPI":302,"events":130,"object-assign":161}],302:[function(require,module,exports){
 var AppActions = require('../actions/AppActions');
 var url = "http://api.themoviedb.org/3/";
 var api_key = "4355685cdbaeb9d5c7c44ff0ccd1a7fc";
@@ -20144,7 +20207,7 @@ module.exports = {
   }
 }
 
-},{"../actions/AppActions":293}],301:[function(require,module,exports){
+},{"../actions/AppActions":293}],303:[function(require,module,exports){
 var AppActions = require('../actions/AppActions');
 var url = "http://api.themoviedb.org/3/";
 var api_key = "4355685cdbaeb9d5c7c44ff0ccd1a7fc";
@@ -20165,4 +20228,4 @@ module.exports = {
   }
 }
 
-},{"../actions/AppActions":293}]},{},[298]);
+},{"../actions/AppActions":293}]},{},[300]);

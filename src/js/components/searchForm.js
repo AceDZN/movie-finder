@@ -2,7 +2,7 @@ var React = require('react');
 var AppActions = require('../actions/AppActions');
 var AppStore = require('../stores/AppStore');
 
-var SearchForm = React.createClass({
+module.exports =  React.createClass({
   getInitialState: function(){
     return {
       searchQuery:"",
@@ -49,5 +49,3 @@ var SearchForm = React.createClass({
     AppActions.searchForMovie(movie);
   }
 });
-
-module.exports = SearchForm;
