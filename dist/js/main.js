@@ -19996,24 +19996,53 @@ module.exports = React.createClass({displayName: "exports",
 var React = require('React');
 
 module.exports = React.createClass({displayName: "exports",
-  renderImage: function(){
-    if(this.props.movie.poster_path && this.props.movie.poster_path != null){
-      return "https://image.tmdb.org/t/p/w300"+this.props.movie.poster_path
-    } else {
-      return "./img/no-poster.jpg"
+  getInitialState: function(){
+    return {
+      animation_class: "flipInX"
     }
   },
-  inset: function(){
-    return React.createElement("div", {className: "inset"}, 
-      this.props.movie.vote_average
-    )
+  componentDidMount: function(){
+  },
+  componentWillUnmount: function(){
+    this.setState({
+      animation_class: "flipOutY"
+    });
+  },
+  renderImage: function(){
+    if(this.props.movie.poster_path && this.props.movie.poster_path != null){
+      return React.createElement("img", {src: "https://image.tmdb.org/t/p/w300"+this.props.movie.poster_path})
+    } else {
+      return (React.createElement("img", {src: "./img/no-poster.jpg"}))
+    }
+  },
+  renderDetails: function(){
+    return (React.createElement("div", {className: "details_wrap"}, 
+      React.createElement("p", null, this.props.movie.overview), 
+      React.createElement("ul", {className: "list-group "}, 
+        React.createElement("li", {className: "list-group-item"}, 
+          "Vote Average: ", this.props.movie.vote_average
+        )
+      )
+    ))
   },
   render: function(){
     return (
-      React.createElement("div", {className: "col-xs-6 col-sm-4 col-md-3 image_preview"}, 
-          React.createElement("h5", null, this.props.movie.title), 
-          React.createElement("img", {src: this.renderImage()}), 
-          this.inset()
+      React.createElement("div", null, 
+        React.createElement("div", {className: "panel panel-default animated "+ this.state.animation_class}, 
+          React.createElement("div", {className: "panel-heading"}, 
+            React.createElement("h3", {className: "panel-title"}, this.props.movie.title)
+          ), 
+          React.createElement("div", {className: "panel-body"}, 
+            React.createElement("div", {className: "row"}, 
+              React.createElement("div", {className: "col-xs-4 col-sm-4 col-md-3 image_preview"}, 
+                  this.renderImage()
+              ), 
+              React.createElement("div", {className: "col-xs-8 col-sm-8 col-md-9 content_wrap"}, 
+                this.renderDetails()
+              )
+            )
+          )
+        )
       )
     );
   }
@@ -20030,7 +20059,7 @@ module.exports = React.createClass({displayName: "exports",
     var children = [];
     if(this.props.movies.length >=1){
       this.props.movies.map(function(movie,i){
-        children.push(React.createElement(Movie, {movie: movie, key: "movie_"+i}));
+        children.push(React.createElement(Movie, {key: "movie_"+i, movie: movie}));
       })
       return (React.createElement("div", null, 
           React.createElement("div", {className: "row"}, 
@@ -20038,9 +20067,7 @@ module.exports = React.createClass({displayName: "exports",
               React.createElement("h3", {className: "results"}, "Results")
             )
           ), 
-          React.createElement("div", {className: "row"}, 
-            children
-          )
+          children
         )
         )
     }

@@ -8,7 +8,7 @@ module.exports = React.createClass({
     var children = [];
     if(this.props.movies.length >=1){
       this.props.movies.map(function(movie,i){
-        children.push(<Movie movie={movie} key={"movie_"+i}/>);
+        children.push(<Movie key={"movie_"+i} movie={movie} />);
       })
       return (<div>
           <div className="row">
@@ -16,9 +16,7 @@ module.exports = React.createClass({
               <h3 className="results">Results</h3>
             </div>
           </div>
-          <div className="row">
-            {children}
-          </div>
+          {children}
         </div>
         )
     }
